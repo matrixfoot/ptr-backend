@@ -4,22 +4,13 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const User = require('./models/user');
-const event = require('./models/fiscal-events');
 const cors = require('cors');
 const isJwtExpired =require ('jwt-check-expiration');
 require ('dotenv').config();
 const fetch =require('node-fetch');
 const userRoutes = require('./routes/user');
-const condidateRoutes = require('./routes/career-condidate');
-const contactRoutes = require('./routes/contact-req');
-const carouselRoutes = require('./routes/settings');
 const communRoutes = require('./routes/communinfo');
 const statisticsRoutes = require('./routes/statistics');
-const eventRoutes = require('./routes/event');
-const relationRoutes = require('./routes/relation');
-
-const decfiscmensRoutes = require('./routes/dec-fisc-mens');
-const deccomptabiliteRoutes = require('./routes/dec-comptabilite');
 const cron = require("node-cron");
 const { stringify } = require('querystring');
 
@@ -150,15 +141,7 @@ app.use((req, res, next) => {
       makeRequest();
  });*/
  app.use('/api/users', userRoutes);
- app.use('/api/condidates', condidateRoutes);
- app.use('/api/contactreqs', contactRoutes);
- app.use('/api/settings', carouselRoutes);
  app.use('/api/commun', communRoutes);
- app.use('/api/relations', relationRoutes);
-
- app.use('/api/events', eventRoutes);
- app.use('/api/decfiscmens', decfiscmensRoutes);
- app.use('/api/deccomptabilite', deccomptabiliteRoutes);
  app.use('/iisnode',statisticsRoutes, express.static(path.join(__dirname, 'iisnode')));
  app.use(express.static(path.join(__dirname, 'fichiers')));
   app.get('*', (request, response) => {
