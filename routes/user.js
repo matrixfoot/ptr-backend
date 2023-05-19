@@ -3,14 +3,13 @@ const router = express.Router();
 const userController = require('../controllers/user');
 const multer = require('../middleware/multer-config3');
 router.post('/signup', userController.signup);
-
 router.post('/login', userController.login);
 router.post('/signout', userController.signout);
-router.post('/verify-email', userController.verifyEmail);
+/*router.post('/verify-email', userController.verifyEmail);
 router.post('/forgot-password', userController.forgotPassword);
 router.post('/validate-reset-token', userController.validateResetToken);
 router.post('/reset-password', userController.resetPassword);
-router.post('/add_multiple_users', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'event'),userController.createmultipleusers);
+router.post('/add_multiple_users', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'event'),userController.createmultipleusers);*/
 router.get('/:id', userController.getUser);
 router.get('/deleteduser/:id', userController.allowIfLoggedin, userController.grantAccess('readAny', 'profile'),userController.getUserdeleted);
 router.post('/filteruserrole', userController.allowIfLoggedin, userController.grantAccess('readAny', 'profile'),userController.filteruserrole);

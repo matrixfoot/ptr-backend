@@ -65,25 +65,25 @@ exports.allowIfLoggedin = async (req, res, next) => {
 
 
 exports.signup = async (req, res, next) => {
-  try {
+  
     const origin =req.get('origin');
-    const { email, password,confirmpassword, firstname,lastname,usertype,fonction,secteur,civilite,nature,raisonsociale,mobile,adresseactivite,dateeffet,codepostal,desactive,nomsociete,clientcode,role} = req.body
+    const { email, password,confirmpassword, firstname,lastname,civilite,nature,mobile,desactive,clientcode,role} = req.body
     
     const hashedPassword = await hashPassword(password);
     const confirmedhashedPassword = await hashPassword(confirmpassword);
     
-    const newUser = new User({email, password:hashedPassword,confirmpassword:confirmedhashedPassword,firstname,usertype,lastname,mobile,fonction,adresseactivite,dateeffet,desactive,codepostal,secteur,civilite,nature,raisonsociale,nomsociete,clientcode,role: role || "basic" });
+    const newUser = new User({email, password:hashedPassword,confirmpassword:confirmedhashedPassword,firstname,lastname,mobile,desactive,civilite,nature,clientcode,role: role || "basic" });
     const accessToken = jwt.sign({ userId: newUser._id }, 'RANDOM_TOKEN_SECRET', {
       expiresIn: "1d"
     });
-    if (await User.findOne({ email: req.body.email })) {
+    /*if (await User.findOne({ email: req.body.email })) {
       // send already registered error in email to prevent account enumeration
       return await (sendAlreadyRegisteredEmail(email, origin)).
       then (()=> res.status(300).json({ error: 'utilisateur avec ce Mail existe déjà!' }))
       .catch(error => res.status(400).json({ error , message: 'opération non aboutie veuillez réessayer'}));
       
       
-  }
+  }*/
   if (await User.findOne({ mobile: req.body.mobile })) {
     
     return await (res.status(300).json({ error: 'utilisateur avec ce Mobile existe déjà!' }))
@@ -101,19 +101,12 @@ if (await User.findOne({ clientcode: req.body.clientcode })) {
     newUser.desactive.statut=false;
     newUser.desactive.date = Date.now();
     newUser.standby=true
-    await (newUser.save(),sendVerificationEmail(newUser, origin),sendcreationemail('macompta@macompta.com.tn',newUser, origin)).
+    await (newUser.save()/*,sendVerificationEmail(newUser, origin),sendcreationemail('macompta@macompta.com.tn',newUser, origin)*/).
     then (()=> res.json({
       data: newUser,
       message: "You have signed up successfully"
     }))
     .catch(error => res.status(400).json({ error , message: 'opération non aboutie veuillez réessayer'}));
-    
-   
-  } catch (error) {
-    res.status(31).json({ error });
-  }
- 
-  
 }
 /*insert many users*/
 exports.createmultipleusers = async (req, res, next) => {
@@ -175,7 +168,7 @@ exports.verifyEmail= async (req, res, next) => {
 }
 }
 
-exports.forgotPassword= async (req, res, next) => {
+/*exports.forgotPassword= async (req, res, next) => {
 try{
   const origin =req.get('origin');
   const {email}=req.body;
@@ -202,7 +195,7 @@ try{
 }catch (error) {
   res.status(404).json({ error });
 }
-}
+}*/
 exports.validateResetToken= async (req, res, next) => {
   try{
   const {token}= req.body;
@@ -220,7 +213,7 @@ catch (error) {
 }
 }
 
-exports.resetPassword= async (req, res, next) => {
+/*exports.resetPassword= async (req, res, next) => {
 try{
   const {token,password}= req.body;
   const user = await User.findOne({ 
@@ -241,7 +234,7 @@ try{
 }catch (error) {
   res.status(454).json({ error });
 }
-}
+}*/
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -439,11 +432,11 @@ exports.completeUser = async (req, res, next) => {
     matriculefiscale,fonction,secteur,choixfacture,numeronote,paramcomptable,usertype,civilite,nature,raisonsociale,adresseactivite,dateeffet,codepostal,mobile,nomsociete,clientcode,role} = req.body
     const _id = req.params.id;
     const user = await User.findById(_id);
-    if (req.body.email && user.email !== req.body.email &&await User.findOne({ email: req.body.email })) {
+    /*if (req.body.email && user.email !== req.body.email &&await User.findOne({ email: req.body.email })) {
       // send already registered error in email to prevent account enumeration
       return await (sendAlreadyRegisteredEmail(email, origin),res.status(300).json({ error: 'utilisateur avec ce Mail existe déjà!' }))
       
-  }
+  }*/
   if (req.body.matriculefiscale && user.matriculefiscale !== req.body.matriculefiscale &&await User.findOne({ matriculefiscale: req.body.matriculefiscale })) {
     
     return await (res.status(300).json({ error: 'utilisateur avec ce Matricule fiscale existe déjà!' }))
@@ -475,7 +468,7 @@ exports.completeUser = async (req, res, next) => {
     
     user.updated = Date.now();
     
-    await (user.save(),sendupdatecompleteemail(user, origin)).
+    await (user.save()/*,sendupdatecompleteemail(user, origin)*/).
     then (()=>res.status(200).json({
       data: user,
       message: 'Objet modifié !'
@@ -527,11 +520,11 @@ exports.updateUser = async (req, res, next) => {
     const nomsociete=userObject.nomsociete
     const clientcode=userObject.clientcode
     const role=userObject.role
-    if (req.body.email && user.email !== req.body.email &&await User.findOne({ email: req.body.email })) {
+    /*if (req.body.email && user.email !== req.body.email &&await User.findOne({ email: req.body.email })) {
       // send already registered error in email to prevent account enumeration
       return await (sendAlreadyRegisteredEmail(email, origin),res.status(300).json({ error: 'utilisateur avec ce Mail existe déjà!' }))
       
-  }
+  }*/
   if (req.body.matriculefiscale && user.matriculefiscale !== req.body.matriculefiscale &&await User.findOne({ matriculefiscale: req.body.matriculefiscale })) {
     
     return await (res.status(300).json({ error: 'utilisateur avec ce Matricule fiscale existe déjà!' }))
@@ -587,7 +580,7 @@ exports.updateUser = async (req, res, next) => {
     console.log(userObject)
     //console.log(req.body)
     //console.log(req.file)
-    await (user.save(),sendupdateemail(user, origin)).
+    await (user.save()/*,sendupdateemail(user, origin)*/).
     then (()=>res.status(200).json({
       data: user,
       message: 'Objet modifié !'
