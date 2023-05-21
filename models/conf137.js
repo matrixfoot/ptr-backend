@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const fichier137Schema = mongoose.Schema({
-    MERCHANTIDENTIFICATION: {
+const compconfSchema = mongoose.Schema({
+    /*MERCHANTIDENTIFICATION: {
         type: String,
     },
     BATCHIDENTIFICATION: {
@@ -182,15 +182,16 @@ const fichier137Schema = mongoose.Schema({
     FILLER6: {
         type: String,
     },
-    
     ENDOFRECORD4: {
         type: String,
     },
     ficheUrl: {
         type: String,
-    },
-    created: { type: Date, default: Date.now },
+    },*/ 
+  userId: { type: String},
+  compconfs:[],
+  created: { type: Date, default: Date.now },
   updated: { type: Date}
 });
 
-module.exports = mongoose.model('Fichier137', fichier137Schema);
+module.exports = mongoose.model('compconf', compconfSchema);

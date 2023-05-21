@@ -9,19 +9,16 @@ const isJwtExpired =require ('jwt-check-expiration');
 require ('dotenv').config();
 const fetch =require('node-fetch');
 const userRoutes = require('./routes/user');
+const compconfRoutes = require('./routes/compconf');
 const communRoutes = require('./routes/communinfo');
 const statisticsRoutes = require('./routes/statistics');
 const cron = require("node-cron");
-const { stringify } = require('querystring');
-
 const app = express();
-
 mongoose.connect('mongodb+srv://'+process.env.USERNAMEMONGO+':'+process.env.PASSWORDMONGO+process.env.URIMONGO,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
-
 app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -29,29 +26,22 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
   });
-
-  app.use(bodyParser.json());
+  app.use(bodyParser.json({ limit: '50mb' }));
   app.use(
     bodyParser.urlencoded({
-      extended: false
+      extended: false, limit: '50mb'
     })
   );
   app.use(async (req, res, next) => {
-    
     try{
     if (req.headers["x-access-token"]) {
       const accessToken = req.headers["x-access-token"];
       const { userId} = await jwt.verify(accessToken, 'RANDOM_TOKEN_SECRET');
       // Check if token has expired
-      
-      
       res.locals.loggedInUser = await User.findById(userId);
-      
       next();
-      
      } else {
       next();
-      
      }}
      catch (error) {
       res.status(415).json({ error });
@@ -127,27 +117,19 @@ app.use((req, res, next) => {
     ).catch(
       (error) => {
         console.log(error)
-        });
-       
-           
-       
-   
-      
+        });   
   }
-
      // makeRequest();
 
  /*cron.schedule('0 30 09 * * *', () => {
       makeRequest();
  });*/
  app.use('/api/users', userRoutes);
+ app.use('/api/compconfs', compconfRoutes);
  app.use('/api/commun', communRoutes);
  app.use('/iisnode',statisticsRoutes, express.static(path.join(__dirname, 'iisnode')));
  app.use(express.static(path.join(__dirname, 'fichiers')));
   app.get('*', (request, response) => {
     response.sendFile(path.join(__dirname, 'fichiers'));
   })
-
-
-  
 module.exports = app;

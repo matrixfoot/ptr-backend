@@ -1,10 +1,11 @@
-const File137 = require('../models/conf137');
+const Compconf = require('../models/conf137');
 const fetch =require('node-fetch');
+const User = require('../models/user');
 
 
-/* Fetch all relations */
-exports.getData137 = async (req, res, next) => {
-  await File137.find().then(
+/* Fetch all compconf */
+exports.getcompconf = async (req, res, next) => {
+  await Compconf.find().then(
     (files) => {
       res.status(200).json(files);
     }
@@ -48,51 +49,39 @@ res.status(200).json(Relations);
 };*/
 
 /*insert many Relations*/
-exports.createmultipledata = async (req, res, next) => {
-  try {
-let newdatas= req.body
-  //const newRelation = new Relation({ title, date,description }) 
-  newdatas.forEach((item, index) => {
-item.prenom=`${newRelations[index].prenom}`
-item.nom=`${newRelations[index].nom}`
-item.mobile=`${newRelations[index].mobile}`
-const newRelation = new Relation({firstname:item.prenom,lastname:item.nom,mobile:item.mobile});
-console.log(newRelation)
-newRelation.save();
-   })
-  res.status(201).json(
-    {
-      data: newRelations,
-        type: "succès",
-        message: "Evenements créés"
-    }
-);
-} catch (error) {
-  res.status(409).json({ message: error.message });
+exports.createcompconf = async (req, res, next) => {   
+const origin =req.get('origin');   
+const newcompconf = new Compconf({...req.body});
+const {userId} = req.body
+const user = await User.findById(userId);
+   newcompconf.save().
+    then (()=>res.status(200).json({
+      data: newcompconf,
+      message: "Votre compconf a été crée avec succès"
+    })) 
+   
 }
-}
-
-/* Delete singile Relation */
-/*exports.deleteRelation = async (req, res, next) => {
+/* Delete single compconf */
+exports.deletecompconfbyid = async (req, res, next) => {
   
     const id = req.params.id;
-    const relation = await Relation.findById(id);
-    if (!relation) return res.status(401).json({ error: 'Demande non trouvé !' });
-    await Relation.findByIdAndDelete(id);
+    const compconf = await Compconf.findById(id);
+    if (!compconf) return res.status(401).json({ error: 'Demande non trouvé !' });
+    await Compconf.findByIdAndDelete(id);
 
     res.status(200).json({
       data: null,
-      message: 'relation supprimée avec succès'
+      message: 'compconf supprimée avec succès'
     });
  
 }
 
-exports.getRelationbyid = (req, res, next) => {
-    Relation.findOne({
+exports.getcompconfbyid = (req, res, next) => {
+    Compconf.findOne({
       _id: req.params.id
     }).then(
-      (Relation) => {
-        res.status(200).json(Relation);
+      (compconf) => {
+        res.status(200).json(compconf);
       }
     ).catch(
       (error) => {
@@ -103,26 +92,26 @@ exports.getRelationbyid = (req, res, next) => {
     );
   }
   
-exports.updateRelation =async  (req, res, next) => {
+exports.updatecompconf =async  (req, res, next) => {
  
     try {
         
         
-        const RelationObject = req.file ?
+        const compconfObject = req.file ?
           {
-            ...JSON.parse(req.body.Relation),
+            ...JSON.parse(req.body.compconf),
             ficheUrl: `${req.file.url}`
           } : { ...req.body };
         const _id = req.params.id;
-        const relation =  await Relation.findById(_id);
+        const compconf =  await Compconf.findById(_id);
         
-        await Relation.findByIdAndUpdate(_id, { ...RelationObject});
+        await Compconf.findByIdAndUpdate(_id, { ...compconfObject});
             
-        relation.updated = Date.now();
-         await relation.save().
+        compconf.updated = Date.now();
+         await compconf.save().
         then (()=> res.status(200).json({
-          data: relation,
-          message: 'relation modifié !'
+          data: compconf,
+          message: 'compconf modifié !'
         }))
         .catch(error => res.status(400).json({ error , message: 'opération non aboutie veuillez réessayer'}));
         
@@ -130,16 +119,16 @@ exports.updateRelation =async  (req, res, next) => {
         res.status(404).json({ error });
       }
   }
-  exports.deleteRelations = async (req, res, next) => {
+  exports.deletecompconfs = async (req, res, next) => {
     try {
       
-      await Relation.deleteMany();
+      await Compconf.deleteMany();
   
       res.status(200).json({
         data: null,
-        message: 'toutes les relations sont supprimés avec succès'
+        message: 'tous les fichiers compconf sont supprimés avec succès'
       });
     } catch (error) {
       res.status(400).json({ error });
     }
-  }*/
+  }
