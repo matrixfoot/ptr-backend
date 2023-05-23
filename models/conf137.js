@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const compconfSchema = mongoose.Schema({
-    /*MERCHANTIDENTIFICATION: {
+    MERCHANTIDENTIFICATION: {
         type: String,
     },
     BATCHIDENTIFICATION: {
@@ -185,11 +185,7 @@ const compconfSchema = mongoose.Schema({
     ENDOFRECORD4: {
         type: String,
     },
-    ficheUrl: {
-        type: String,
-    },*/ 
-  userId: { type: String},
-  compconfs:[],
+  doctype: { type: String},
   created: { type: Date, default: Date.now },
   updated: { type: Date}
 });
