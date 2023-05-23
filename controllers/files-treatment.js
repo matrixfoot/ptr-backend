@@ -52,17 +52,12 @@ res.status(200).json(Relations);
 exports.createcompconf = async (req, res, next) => {   
 const origin =req.get('origin');
 let datas=req.body 
-datas.forEach((item, index) => {
-  const newcompconf = new Compconf({...item});
-  newcompconf.doctype='fichier compconf'
-  console.log(newcompconf)
-  newcompconf.save()
-}
-)
+await Compconf.insertMany(datas);
+
 res.status(200).json({
-  data: datas,
-  message: "Votre compconf a été crée avec succès"
-})
+  data: null,
+  message: 'compconf supprimée avec succès'
+});
 }
 /* Delete single compconf */
 exports.deletecompconfbyid = async (req, res, next) => {
