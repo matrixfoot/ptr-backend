@@ -55,13 +55,14 @@ let datas=req.body
 datas.forEach((item, index) => {
   const newcompconf = new Compconf({...item});
   newcompconf.doctype='fichier compconf'
-  newcompconf.save().
-  then (()=>res.status(200).json({
-    data: newcompconf,
-    message: "Votre compconf a été crée avec succès"
-  })) 
+  console.log(newcompconf)
+  newcompconf.save()
 }
-)  
+)
+res.status(200).json({
+  data: datas,
+  message: "Votre compconf a été crée avec succès"
+})
 }
 /* Delete single compconf */
 exports.deletecompconfbyid = async (req, res, next) => {
