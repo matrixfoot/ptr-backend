@@ -19,12 +19,7 @@ mongoose.connect('mongodb+srv://'+process.env.USERNAMEMONGO+':'+process.env.PASS
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
-  const corsOptions ={
-    origin:'http://localhost:4202', 
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200
-}
-app.use(cors(corsOptions));
+app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization,x-access-token');
