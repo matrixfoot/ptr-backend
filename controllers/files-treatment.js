@@ -50,14 +50,19 @@ res.status(200).json(Relations);
 
 /*insert many Relations*/
 exports.createcompconf = async (req, res, next) => {   
-const origin =req.get('origin');
-let datas=req.body 
-await Compconf.insertMany(datas);
-
-res.status(200).json({
-  data: null,
-  message: 'compconf supprimée avec succès'
-});
+  try
+  {
+    const origin =req.get('origin');
+    let datas=req.body 
+    await Compconf.insertMany(datas)
+      res.status(200).json({
+        data: null,
+        message: 'compconf ajoutée avec succès'
+      })
+  }
+catch (error) {
+  res.status(400).json({ error });
+}
 }
 /* Delete single compconf */
 exports.deletecompconfbyid = async (req, res, next) => {

@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const compconfSchema = mongoose.Schema({
+    userId: {
+        type: String,
+    },
     MERCHANTIDENTIFICATION: {
         type: String,
     },
@@ -91,31 +94,7 @@ const compconfSchema = mongoose.Schema({
     CHARGEBACKREASONCODE: {
         type: String,
     },
-
-      MERCHANTCATEGORIECODE: {
-        type: String,
-    },
     FILLER3: {
-        type: String,
-    },
-    ACQUIRERBANKIDENTIFICATION: {
-        type: String,
-    },
-    
-    LOCALCARDSYSTEMNETWORK: {
-        type: String,
-    },
-    ISSUERBANKIDENTIFICATION: {
-        type: String,
-    },
-    ACQUIRERREFERENCENUMBER: {
-        type: String,
-    },
-    
-    TRANSACTIONORDERUSAGECODE: {
-        type: String,
-    },
-    MERCHANTNAME2: {
         type: String,
     },
     SETTLEMENTAMOUNT2: {
@@ -189,5 +168,4 @@ const compconfSchema = mongoose.Schema({
   created: { type: Date, default: Date.now },
   updated: { type: Date}
 });
-
 module.exports = mongoose.model('compconf', compconfSchema);
