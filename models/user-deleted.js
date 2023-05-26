@@ -8,7 +8,8 @@ const userdeletedSchema = mongoose.Schema({
   acceptTerms:{ type: Boolean},
   firstname: { type: String},
   lastname: { type: String},
-  
+  mobile: { type: String},
+  clientcode: { type: String},
   ficheUrl: { type: String,},
   
   civilite: { type: String },
