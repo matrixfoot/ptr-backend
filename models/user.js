@@ -7,7 +7,8 @@ const userSchema = mongoose.Schema({
   acceptTerms:{ type: Boolean},
   firstname: { type: String},
   lastname: { type: String},
-  
+  mobile: { type: String},
+
   ficheUrl: { type: String,},
   
   civilite: { type: String },
