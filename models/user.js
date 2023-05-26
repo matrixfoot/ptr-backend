@@ -8,6 +8,7 @@ const userSchema = mongoose.Schema({
   firstname: { type: String},
   lastname: { type: String},
   mobile: { type: String},
+  codeclient: { type: String},
 
   ficheUrl: { type: String,},
   
