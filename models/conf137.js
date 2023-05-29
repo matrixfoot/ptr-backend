@@ -138,10 +138,10 @@ const compconfSchema = mongoose.Schema({
     ENDOFRECORD3: {
         type: String,
     },
-    PRESENTMENTREASONCODE2nd: {
+    ndPRESENTMENTREASONCODE: {
         type: String,
     },
-    PRESENTMENTTRANSACTIONCYCLE2nd: {
+    ndPRESENTMENTTRANSACTIONCYCLE: {
         type: String,
     },
     
@@ -155,7 +155,7 @@ const compconfSchema = mongoose.Schema({
         type: String,
     },
     
-    RESENTMENTINDICATOR2nd: {
+    PRESENTMENTINDICATOR: {
         type: String,
     },
     FILLER6: {
