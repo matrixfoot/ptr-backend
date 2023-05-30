@@ -2,6 +2,7 @@ const Compconf = require('../models/conf137');
 const Workgab = require('../models/workgab');
 const Workpos = require('../models/workpos');
 const Worksms = require('../models/worksms');
+const CryptoJS = require("crypto-js");
 
 const fetch =require('node-fetch');
 const User = require('../models/user');
@@ -21,19 +22,18 @@ exports.getcompconf = async (req, res, next) => {
 };
 /*insert many Relations*/
 exports.createcompconf = async (req, res, next) => {   
-  try
-  {
+ 
     const origin =req.get('origin');
     let datas=req.body 
+    datas.forEach(element => {
+      let ciphertext = CryptoJS.AES.encrypt(element.CARDHOLDERNUMBER, '****************').toString();
+      element.CARDHOLDERNUMBER = ciphertext
+    });
     await Compconf.insertMany(datas)
       res.status(200).json({
         data: null,
         message: 'compconf ajoutée avec succès'
       })
-  }
-catch (error) {
-  res.status(400).json({ error });
-}
 }
 /* Delete single compconf */
 exports.deletecompconfbyid = async (req, res, next) => {
@@ -124,6 +124,10 @@ exports.createWorkgab = async (req, res, next) => {
   {
     const origin =req.get('origin');
     let datas=req.body 
+    datas.forEach(element => {
+      let ciphertext = CryptoJS.AES.encrypt(element.CARDHOLDERNUMBER, '****************').toString();
+      element.CARDHOLDERNUMBER = ciphertext
+    });
     await Workgab.insertMany(datas)
       res.status(200).json({
         data: null,
@@ -222,6 +226,10 @@ exports.createWorkpos = async (req, res, next) => {
   {
     const origin =req.get('origin');
     let datas=req.body 
+    datas.forEach(element => {
+      let ciphertext = CryptoJS.AES.encrypt(element.CARDHOLDERNUMBER, '****************').toString();
+      element.CARDHOLDERNUMBER = ciphertext
+    });
     await Workpos.insertMany(datas)
       res.status(200).json({
         data: null,
@@ -321,6 +329,10 @@ exports.createWorksms = async (req, res, next) => {
   {
     const origin =req.get('origin');
     let datas=req.body 
+    datas.forEach(element => {
+      let ciphertext = CryptoJS.AES.encrypt(element.CARDHOLDERNUMBER, '****************').toString();
+      element.CARDHOLDERNUMBER = ciphertext
+    });
     await Worksms.insertMany(datas)
       res.status(200).json({
         data: null,
