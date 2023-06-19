@@ -12,6 +12,8 @@ const userRoutes = require('./routes/user');
 const compconfRoutes = require('./routes/compconf');
 const communRoutes = require('./routes/communinfo');
 const statisticsRoutes = require('./routes/statistics');
+const reclamationRoutes = require('./routes/reclamation');
+
 const cron = require("node-cron");
 const app = express();
 mongoose.connect('mongodb+srv://'+process.env.USERNAMEMONGO+':'+process.env.PASSWORDMONGO+process.env.URIMONGO,
@@ -126,6 +128,8 @@ app.use((req, res, next) => {
  });*/
  app.use('/api/users', userRoutes);
  app.use('/api/compconfs', compconfRoutes);
+ app.use('/api/reclamations', reclamationRoutes);
+
  app.use('/api/commun', communRoutes);
  app.use('/iisnode',statisticsRoutes, express.static(path.join(__dirname, 'iisnode')));
  app.use(express.static(path.join(__dirname, 'fichiers')));
